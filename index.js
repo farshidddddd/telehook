@@ -19,7 +19,6 @@ app.post(`/bot${token}`, (req, res) => {
   res.sendStatus(200);
 });
 
-const express = require('express');
 const bodyParser = require('body-parser');
 const TelegramBot = require('node-telegram-bot-api');
 const mysql = require('mysql2');
