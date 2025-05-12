@@ -14,7 +14,7 @@ bot.setWebHook(`${url}/bot${token}`);  // تنظیم Webhook
 const connection = mysql.createConnection({
   host: 'localhost',
   port: 3306,
-  user: root',
+  user: 'root',
   password: '',
   database: '1111',
   ssl: {
