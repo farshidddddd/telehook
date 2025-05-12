@@ -5,7 +5,7 @@ const mysql = require('mysql2');
 const fs = require('fs');
 
 const token = '7671033714:AAGezlzZD2uIU4Tm-xZwbuizQZahMyOVbUc';  // توکن ربات
-const url = 'https://telegram-bot-2-w75g.onrender.com';       // آدرس دامنه‌ی رندر (بعداً جایگزین کن)
+const url = 'https://telehook.onrender.com';       // آدرس دامنه‌ی رندر (بعداً جایگزین کن)
 
 const bot = new TelegramBot(token, { webHook: { port: 3000 } });
 bot.setWebHook(`${url}/bot${token}`);  // تنظیم Webhook
@@ -15,7 +15,7 @@ const connection = mysql.createConnection({
   host: 'mysql-27ee023f-nevermind1381-fe86.h.aivencloud.com',
   port: 21660,
   user: 'avnadmin',
-  password: 'AVNS_WFpqO-p05fQlaS70UL-',
+  password: 'AVNS_XfmU0NiA6DchnVCOm4n',
   database: 'defaultdb',
   ssl: {
     ca: fs.readFileSync('./ca.pem')
@@ -35,7 +35,7 @@ app.post(`/bot${token}`, (req, res) => {
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
 
-  bot.sendMessage(chatId, 'سلام 👋\nبرای مشاهده لیست کالاها دکمه زیر را بزنید:', {
+  bot.sendMessage(chatId, 'سلام \nبرای مشاهده کالاها دکمه زیر را بزنید:', {
     reply_markup: {
       keyboard: [['📋 منو']],
       resize_keyboard: true,
