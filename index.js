@@ -12,10 +12,10 @@ bot.setWebHook(`${url}/bot${token}`);  // تنظیم Webhook
 
 // اتصال به دیتابیس Aiven
 const connection = mysql.createConnection({
-  host: 'mysql-216598a6-telegram1315.i.aivencloud.com',
-  port: 24488,
+  host: 'mysql-27ee023f-nevermind1381-fe86.h.aivencloud.com',
+  port: 21660,
   user: 'avnadmin',
-  password: 'AVNS_XfmU0NiA6DchnVCOm4n',
+  password: 'AVNS_WFpqO-p05fQlaS70UL-',
   database: 'defaultdb',
   ssl: {
     ca: fs.readFileSync('./ca.pem')
