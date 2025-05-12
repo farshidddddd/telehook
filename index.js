@@ -8,21 +8,6 @@ const token = '7671033714:AAGezlzZD2uIU4Tm-xZwbuizQZahMyOVbUc';  // توکن ر�
 const url = 'https://telehook.onrender.com';       // آدرس دامنه‌ی رندر (بعداً جایگزین کن)
 
 const bot = new TelegramBot(token, { webHook: { port: 3000 } });
-bot.setWebHook(`${url}/bot${token}`);  // تنظیم Webhook
-
-const app = express();
-app.use(bodyParser.json());
-
-// روت وب‌هوک تلگرام
-app.post(`/bot${token}`, (req, res) => {
-  bot.processUpdate(req.body);
-  res.sendStatus(200);
-});
-
-const token = '7671033714:AAGezlzZD2uIU4Tm-xZwbuizQZahMyOVbUc';  // توکن ربات
-const url = 'https://telehook.onrender.com';       // آدرس دامنه‌ی رندر (بعداً جایگزین کن)
-
-const bot = new TelegramBot(token, { webHook: { port: 3000 } });
 bot.setWebHook(${url}/bot${token});  // تنظیم Webhook
 
 const app = express();
