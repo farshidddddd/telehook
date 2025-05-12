@@ -5,10 +5,22 @@ const mysql = require('mysql2');
 const fs = require('fs');
 
 const token = '7671033714:AAGezlzZD2uIU4Tm-xZwbuizQZahMyOVbUc';  // توکن ربات
-const url = 'https://telehook.onrender.com';       // آدرس دامنه‌ی رندر (بعداً جایگزین کن)
+const url = 'https://telegram-bot-2-w75g.onrender.com';       // آدرس دامنه‌ی رندر (بعداً جایگزین کن)
 
 const bot = new TelegramBot(token, { webHook: { port: 3000 } });
 bot.setWebHook(`${url}/bot${token}`);  // تنظیم Webhook
+
+// اتصال به دیتابیس Aiven
+const connection = mysql.createConnection({
+  host: 'mysql-216598a6-telegram1315.i.aivencloud.com',
+  port: 24488,
+  user: 'avnadmin',
+  password: 'AVNS_XfmU0NiA6DchnVCOm4n',
+  database: 'defaultdb',
+  ssl: {
+    ca: fs.readFileSync('./ca.pem')
+  }
+});
 
 const app = express();
 app.use(bodyParser.json());
@@ -56,3 +68,4 @@ bot.onText(/منو|menu/i, (msg) => {
     bot.sendMessage(chatId, message, { parse_mode: 'Markdown' });
   });
 });
+
