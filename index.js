@@ -1,38 +1,71 @@
-const express = require("express");
-const axios = require("axios");
-const app = express();
+const express = require('express');
+const bodyParser = require('body-parser');
+const TelegramBot = require('node-telegram-bot-api');
+const mysql = require('mysql2');
+const fs = require('fs');
 
-app.use(express.json());
+const token = '7671033714:AAGezlzZD2uIU4Tm-xZwbuizQZahMyOVbUc';  // توکن ربات
+const url = 'https://telehook.onrender.com';       // آدرس دامنه‌ی رندر (بعداً جایگزین کن)
 
-// توکن ربات شما
-const TOKEN = "7671033714:AAGezlzZD2uIU4Tm-xZwbuizQZahMyOVbUc";
-const TELEGRAM_API = https://api.telegram.org/bot${TOKEN};
-const WEBHOOK_PATH = /webhook/${TOKEN};
-const PORT = process.env.PORT || 3000;
+const bot = new TelegramBot(token, { webHook: { port: 3000 } });
+bot.setWebHook(`${url}/bot${token}`);  // تنظیم Webhook
 
-app.post(WEBHOOK_PATH, async (req, res) => {
-  const message = req.body.message;
-
-  if (message && message.text) {
-    const chatId = message.chat.id;
-    const text = message.text;
-
-    if (text === "/start") {
-      // پاسخ به دستور /start
-      await axios.post(${TELEGRAM_API}/sendMessage, {
-        chat_id: chatId,
-        text: "سلام! به ربات خوش آمدید.",
-      });
-    }
+// اتصال به دیتابیس Aiven
+const connection = mysql.createConnection({
+  host: 'mysql-216598a6-telegram1315.i.aivencloud.com',
+  port: 24488,
+  user: 'avnadmin',
+  password: '',
+  database: 'defaultdb',
+  ssl: {
+    ca: fs.readFileSync('./ca.pem')
   }
+});
 
+const app = express();
+app.use(bodyParser.json());
+
+// روت وب‌هوک تلگرام
+app.post(`/bot${token}`, (req, res) => {
+  bot.processUpdate(req.body);
   res.sendStatus(200);
 });
 
-app.get("/", (req, res) => {
-  res.send("ربات تلگرام فعال است!");
+// هندلر /start
+bot.onText(/\/start/, (msg) => {
+  const chatId = msg.chat.id;
+
+  bot.sendMessage(chatId, 'سلام 👋\nبرای مشاهده لیست کالاها دکمه زیر را بزنید:', {
+    reply_markup: {
+      keyboard: [['📋 منو']],
+      resize_keyboard: true,
+      one_time_keyboard: true
+    }
+  });
 });
 
-app.listen(PORT, () => {
-  console.log(Server is running on port ${PORT});
+// هندلر منو
+bot.onText(/منو|menu/i, (msg) => {
+  const chatId = msg.chat.id;
+
+  connection.query('SELECT * FROM products', (err, results) => {
+    if (err) {
+      console.error('❌ خطا در اجرای کوئری:', err.message);
+      bot.sendMessage(chatId, 'خطایی در دریافت لیست کالاها رخ داد.');
+      return;
+    }
+
+    if (results.length === 0) {
+      bot.sendMessage(chatId, 'کالایی برای نمایش وجود ندارد.');
+      return;
+    }
+
+    let message = '📋 *منو:*\n\n';
+    results.forEach((product, i) => {
+      message += `${i + 1}. ${product.name} - ${product.price} تومان\n`;
+    });
+
+    bot.sendMessage(chatId, message, { parse_mode: 'Markdown' });
+  });
 });
+
