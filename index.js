@@ -19,11 +19,6 @@ app.post(`/bot${token}`, (req, res) => {
   res.sendStatus(200);
 });
 
-const bodyParser = require('body-parser');
-const TelegramBot = require('node-telegram-bot-api');
-const mysql = require('mysql2');
-const fs = require('fs');
-
 const token = '7671033714:AAGezlzZD2uIU4Tm-xZwbuizQZahMyOVbUc';  // توکن ربات
 const url = 'https://telehook.onrender.com';       // آدرس دامنه‌ی رندر (بعداً جایگزین کن)
 
