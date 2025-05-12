@@ -50,7 +50,7 @@ bot.onText(/منو|menu/i, (msg) => {
 
     let message = '📋 *منو:*\n\n';
     results.forEach((product, i) => {
-      message += ${i + 1}. ${product.name} - ${product.price} تومان\n;
+      message += `${i + 1}. ${product.name} - ${product.price} تومان\n`;
     });
 
     bot.sendMessage(chatId, message, { parse_mode: 'Markdown' });
