@@ -8,7 +8,7 @@ const token = '7671033714:AAGezlzZD2uIU4Tm-xZwbuizQZahMyOVbUc';  // توکن ر�
 const url = 'https://telehook.onrender.com';       // آدرس دامنه‌ی رندر (بعداً جایگزین کن)
 
 const bot = new TelegramBot(token, { webHook: { port: 3000 } });
-bot.setWebHook(${url}/bot${token});  // تنظیم Webhook
+bot.setWebHook(`${url}/bot${token}`);  // تنظیم Webhook
 
 const app = express();
 app.use(bodyParser.json());
