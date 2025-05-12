@@ -19,15 +19,46 @@ app.post(`/bot${token}`, (req, res) => {
   res.sendStatus(200);
 });
 
-// بخش‌های قبلی همانند قبل باقی می‌ماند...
+const express = require('express');
+const bodyParser = require('body-parser');
+const TelegramBot = require('node-telegram-bot-api');
+const mysql = require('mysql2');
+const fs = require('fs');
+
+const token = '7671033714:AAGezlzZD2uIU4Tm-xZwbuizQZahMyOVbUc';  // توکن ربات
+const url = 'https://telehook.onrender.com';       // آدرس دامنه‌ی رندر (بعداً جایگزین کن)
+
+const bot = new TelegramBot(token, { webHook: { port: 3000 } });
+bot.setWebHook(${url}/bot${token});  // تنظیم Webhook
+
+// اتصال به دیتابیس Aiven
+const connection = mysql.createConnection({
+  host: 'localhost',
+  port: 3306,
+  user: 'root',
+  password: '',
+  database: '1111',
+  ssl: {
+    ca: fs.readFileSync('./ca.pem')
+  }
+});
+
+const app = express();
+app.use(bodyParser.json());
+
+// روت وب‌هوک تلگرام
+app.post(/bot${token}, (req, res) => {
+  bot.processUpdate(req.body);
+  res.sendStatus(200);
+});
 
 // هندلر /start
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
 
-  bot.sendMessage(chatId, 'سلام 👋\nخوش اومدی به ربات فروشگاه ما!\nبرای مشاهده لیست کالاها دکمه‌ی زیر رو بزن یا از دستور /menu استفاده کن:', {
+  bot.sendMessage(chatId, 'سلام 👋\nبرای مشاهده لیست کالاها دکمه زیر را بزنید:', {
     reply_markup: {
-      keyboard: [['📋 منو'], ['ℹ️ راهنما']],
+      keyboard: [['📋 منو']],
       resize_keyboard: true,
       one_time_keyboard: true
     }
@@ -50,38 +81,11 @@ bot.onText(/منو|menu/i, (msg) => {
       return;
     }
 
-    let message = '📋 *منوی کالاها:*\n\n';
+    let message = '📋 *منو:*\n\n';
     results.forEach((product, i) => {
-      message += `${i + 1}. ${product.name} - ${product.price} تومان\n`;
+      message += ${i + 1}. ${product.name} - ${product.price} تومان\n;
     });
 
-    bot.sendMessage(chatId, message, { parse_mode: 'Markdown' }).then(() => {
-      bot.sendMessage(chatId, 'اگه سوالی داشتی، کافیه بنویسی یا از /help استفاده کنی.');
-    });
+    bot.sendMessage(chatId, message, { parse_mode: 'Markdown' });
   });
-});
-
-// هندلر راهنما
-bot.onText(/\/help|راهنما|ℹ️/i, (msg) => {
-  const chatId = msg.chat.id;
-  const helpText = `📘 راهنما:\n
-🔹 /start - شروع و خوش‌آمدگویی  
-🔹 /menu - نمایش منوی کالاها  
-🔹 سوال داری؟ فقط بنویس 😊`;
-
-  bot.sendMessage(chatId, helpText);
-});
-
-// پاسخ به پیام‌های رایج کاربر
-bot.on('message', (msg) => {
-  const chatId = msg.chat.id;
-  const text = msg.text.toLowerCase();
-
-  if (text.includes('سلام')) {
-    bot.sendMessage(chatId, 'سلام به روی ماهت! 🌞');
-  } else if (text.includes('ممنون') || text.includes('مرسی')) {
-    bot.sendMessage(chatId, 'قابلی نداشت 😊 هر زمان خواستی در خدمتتم.');
-  } else if (text.includes('کمک')) {
-    bot.sendMessage(chatId, 'برای کمک می‌تونی از دستور /help استفاده کنی یا سوالتو مستقیم بپرسی.');
-  }
 });
