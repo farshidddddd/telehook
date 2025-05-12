@@ -15,7 +15,7 @@ const connection = mysql.createConnection({
   host: 'mysql-27ee023f-nevermind1381-fe86.h.aivencloud.com',
   port: 21660,
   user: 'avnadmin',
-  password: 'AVNS_XfmU0NiA6DchnVCOm4n',
+  password: 'AVNS_WFpqO-p05fQlaS70UL-',
   database: 'defaultdb',
   ssl: {
     ca: fs.readFileSync('./ca.pem')
