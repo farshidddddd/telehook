@@ -31,18 +31,6 @@ const url = 'https://telehook.onrender.com';       // آدرس دامنه‌ی �
 const bot = new TelegramBot(token, { webHook: { port: 3000 } });
 bot.setWebHook(${url}/bot${token});  // تنظیم Webhook
 
-// اتصال به دیتابیس Aiven
-const connection = mysql.createConnection({
-  host: 'localhost',
-  port: 3306,
-  user: 'root',
-  password: '',
-  database: '1111',
-  ssl: {
-    ca: fs.readFileSync('./ca.pem')
-  }
-});
-
 const app = express();
 app.use(bodyParser.json());
 
