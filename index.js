@@ -17,10 +17,10 @@ app.post(WEBHOOK_PATH, async (req, res) => {
     const text = message.text;
 
     // ارسال پاسخ
-    await axios.post(${TELEGRAM_API}/sendMessage, {
-      chat_id: chatId,
-      text: شما گفتید: ${text}
-    });
+    await axios.post(`${TELEGRAM_API}/sendMessage`, {
+  chat_id: 'your_chat_id',
+  text: 'Your message here'
+});
   }
   res.sendStatus(200);
 });
