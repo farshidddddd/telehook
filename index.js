@@ -6,7 +6,7 @@ app.use(express.json());
 
 // توکن ربات شما
 const TOKEN = "7671033714:AAGezlzZD2uIU4Tm-xZwbuizQZahMyOVbUc";
-const TELEGRAM_API = https://api.telegram.org/bot${TOKEN};
+const TELEGRAM_API = `https://api.telegram.org/bot${TOKEN}`;
 const WEBHOOK_PATH = /webhook/${TOKEN};
 const PORT = process.env.PORT || 3000;
 
