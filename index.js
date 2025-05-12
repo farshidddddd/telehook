@@ -19,7 +19,7 @@ app.post(WEBHOOK_PATH, async (req, res) => {
     // ارسال پاسخ
     await axios.post(`${TELEGRAM_API}/sendMessage`, {
   chat_id: 'your_chat_id',
-  text: 'salam'
+  text: 'Your message here'
 });
   }
   res.sendStatus(200);
